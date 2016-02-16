@@ -1,25 +1,22 @@
-sub Utils() As Object
+sub Utils() as Object
     this = {
-        fullScreen = utils_fullScreen
+        extend: utils_extend
     }
     return this
 end sub
 
 
 ''
-''  position and size node to fill screen
-''
-function utils_fullScreen(node)
-
-    info = CreateObject("roDeviceInfo")
-    size = info.GetDisplaySize()
-
-    ' size = info.GetDisplayMode()
-
-    node.x = 0
-    node.y = 0
-    node.width = size.width
-    node.height = size.height
-    
+''  Merge the contents of object1 into the target object
+''  @param object target
+''  @param object object1
+'' 
+function utils_extend(target, object1)
+    for each prop in target
+        if object1[prop] then
+            target[prop] = object1[prop]
+        end if
+    end for
+    return target
 end function
 

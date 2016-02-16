@@ -1,53 +1,27 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 
-<component name="ProgressBar" extends="Group">
+<component name="ProgressBar" extends="Rectangle">
 
     <interface>
-        <field id="progress" type="node" onChange="updateProgress"/>
+        <field id="progress" type="integer" onChange="updateProgress"/>
+        <field id="rectSize" type="intarray" onChange="updateRectSize"/>
     </interface>
 
-    <script type="text/brightscript" >
-    <![CDATA[
-
-    ' SEE CustomPlaybackScreen for handling seek, ff, rewind with remote control
-
-    sub init()
-
-        m.trackRect = m.top.findNode("trackRect")
-        m.fillRect = m.top.findNode("fillRect")
-
-        ' Get bounding rect and size the track and fill to fit
-
-    end sub
-
-    function updateProgress()
-
-    end function
-
-    ' function setVideo(video as object)
-
-    ' end function
-
-    ]]>
-    </script>
+    <script type="text/brightscript" uri="pkg:/components/scripts/ProgressBar.brs" />
 
     <children>
     
         <Rectangle
             id="trackRect"
             color="0x000000FF"
-            width="1000"
-            height="60"
             translation="[0,0]" />
 
         <Rectangle
             id="fillRect"
             color="0x00FF00FF"
-            width="300"
-            height="60"
+            width="0"
             translation="[0,0]" />
         
     </children>
-
 
 </component>

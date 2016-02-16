@@ -4,105 +4,17 @@
 
 <component name="VideoScreenScene" extends="Scene">
 
-    <script type="text/brightscript" >
-    <![CDATA[
-
-    ' SEE CustomPlaybackScreen for handling seek, ff, rewind with remote control
-
-    sub init()
-        m.top.setFocus(true)
-        
-        m.progressBarTrack = m.top.findNode("progressBarTrack")
-        m.progressBarFill = m.top.findNode("progressBarFill")
-        m.video = m.top.findNode("videoPlayer")
-        m.video.ObserveField("state", "statusChanged")
-        m.video.ObserveField("bufferingStatus", "bufferingChanged")
-        m.video.ObserveField("position", "positionChanged")
-        
-
-        setVideo()      
-
-    end sub
-
-
-    function positionChanged()
-
-        width = int((m.video.position / m.video.duration) * m.progressBarTrack.width)
-
-        if width > m.progressBarTrack.width then
-            width = m.progressBarTrack.width
-        end if
-
-        m.progressBarFill.width = width
-
-    end function
-
-    function statusChanged()
-        print m.video.state
-    end function
-
-    function bufferingChanged()
-        print m.video.bufferingStatus
-    end function
-
-
-    function setVideo() as void
-
-        videoContent = createObject("RoSGNode", "ContentNode")
-        videoContent.url = "http://tvideos.5min.com//972/5194972/519497184_4.mp4?hdnea=exp=1455638945~acl=/*~hmac=71dd7330805c52e46791bf684cbc6ac9ce17bb28b54b2a6a4f79a2653b307ab3"
-        videoContent.title = "Test Video"
-        videoContent.streamformat = "mp4"
-
-        m.video.content = videoContent
-        m.video.control = "play"
-
-    end function
-
-    function onKeyEvent(key as String, press as Boolean) as Boolean
-        print key
-        handled = false
-        if press then
-            if (key = "down") then
-                m.video.control = "stop"
-            end if
-            if (key = "up") then
-                m.video.control = "play"
-            end if            
-        end if
-        return handled
-    end function
-
-    ]]>
-    </script>
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
+    <script type="text/brightscript" uri="pkg:/source/UI.brs" />
+    <script type="text/brightscript" uri="pkg:/components/scripts/VideoScreenScene.brs" />
 
     <children>
-        <Video
-            id="videoPlayer"
-            width="720"
-            height="480"
-            translation="[0,0]" />
+        <Video id="videoPlayer"/>
 
-        <Group id="progressBarGroup" translation="[0,620]">
-            
-            <Rectangle
-                id="progressBarTrack"
-                color="0x000000FF"
-                width="1000"
-                height="60"
-                translation="[0,0]" />
-
-            <Rectangle
-                id="progressBarFill"
-                color="0x00FF00FF"
-                width="300"
-                height="60"
-                translation="[0,0]" />                
-        
-        </Group>
-
-        
+        <ProgressBar 
+            id="progressBar"
+            height="60" />
 
     </children>
-
 
 </component>
