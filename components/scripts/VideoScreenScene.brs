@@ -20,7 +20,7 @@ sub init()
     uiHelper.fullScreen(m.video)
 
     ' m.video.ObserveField("state", "statusChanged")
-    ' m.video.ObserveField("bufferingStatus", "bufferingChanged")
+    m.video.ObserveField("bufferingStatus", "bufferingChanged")
     m.video.ObserveField("position", "positionChanged")
     
     setVideo()      
@@ -48,31 +48,71 @@ end function
 
 function bufferingChanged()
     ' print m.video.bufferingStatus
+    ' show a preloader graphic?
 end function
 
 
 function setVideo() as void
 
+    ' TEST DATA
     videoContent = createObject("RoSGNode", "ContentNode")
-    videoContent.url = "http://tvideos.5min.com//972/5194972/519497184_4.mp4?hdnea=exp=1455638945~acl=/*~hmac=71dd7330805c52e46791bf684cbc6ac9ce17bb28b54b2a6a4f79a2653b307ab3"
-    videoContent.title = "Test Video"
-    videoContent.streamformat = "mp4"
+    ' videoContent.id = 519497184
+    ' videoContent.contentid = 519497184
+    videoContent.title = "Microsoft's Fetch App Identifies Your Dog"
+    ' videoContent.description = "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be."
+    ' videoContent.shortDescriptionLine1 = "Microsoft's Fetch App Identifies Your Dog"
+    ' videoContent.shortDescriptionLine2 = "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be."
+    ' videoContent.length = 82
+    ' videoContent.rating = "nonadult"
+    videoContent.streamFormat = "mp4"
+    ' videoContent.contentType =  "episode"
+    videoContent.url = "http://tvideos.5min.com//869/5194869/519486842_4.mp4?hdnea=exp=1455727554~acl=/*~hmac=b2b01ab5e30a6134044ad5734d0d608c9f277bd53c291a2890d4f16a154e8e7a"
 
+
+    ' videoContent.title = "Test Video"
+    ' videoContent.streamformat = "mp4"
     m.video.content = videoContent
     m.video.control = "play"
 
 end function
 
 function onKeyEvent(key as String, press as Boolean) as Boolean
+    
     print key
+    
     handled = false
+    
     if press then
-        if (key = "down") then
-            m.video.control = "stop"
-        end if
-        if (key = "up") then
-            m.video.control = "play"
+    
+        if (key = "play") then
+        
+            if m.video.state = "paused" then
+                m.video.control = "resume"
+            else
+                m.video.control = "pause"
+            endif
+    
+        else if (key = "rewind") then
+        
+            m.video.position = m.video.position - 60
+            m.video.seek = m.video.position
+        
+        else if (key = "fastforward") then    
+            
+            m.video.position = m.video.position + 60
+            m.video.seek = m.video.position
+
+        else if (key = "down") then    
+            print "Show more videos at the bottom"
         end if            
+    
     end if
+
     return handled
+
 end function
+
+
+
+
+
