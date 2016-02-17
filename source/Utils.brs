@@ -13,7 +13,7 @@ end sub
 '' 
 function utils_extend(target, object1)
     for each prop in target
-        if object1[prop] then
+        if object1[prop] <> invalid then
             target[prop] = object1[prop]
         end if
     end for

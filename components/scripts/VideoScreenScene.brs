@@ -1,6 +1,23 @@
-' SEE CustomPlaybackScreen for handling seek, ff, rewind with remote control
-
 sub init()
+
+    ' TEST DATA
+    m.episode = {
+        id: 519497184,
+        contentid: 519497184,
+        title: "Microsoft's Fetch App Identifies Your Dog",
+        description: "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be.",
+        shortDescriptionLine1: "Microsoft's Fetch App Identifies Your Dog",
+        shortDescriptionLine2: "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be.",
+        length: 82,
+        rating: "nonadult",
+        streamFormat: "mp4",
+        contentType:  "episode",
+        stream: {  
+            url: "http://tvideos.5min.com//300/5194300/519429940_4v1.mp4?hdnea=exp=1455824551~acl=/*~hmac=2c0a60999724c0b3dcb4135344984f3e77dc0583ba1c35b8686d8d931c1c6bef"
+        }
+    }
+    ' @END TEST DATA
+
 
     uiHelper = UI()
     m.top.setFocus(true)
@@ -22,6 +39,18 @@ sub init()
     m.video.ObserveField("state", "statusChanged")
     m.video.ObserveField("bufferingStatus", "bufferingChanged")
     m.video.ObserveField("position", "positionChanged")
+
+
+    m.menuGroup = m.top.findNode("menuGroup")
+
+    m.titleLabel = m.top.findNode("titleLabel")
+    m.titleLabel.text = m.episode.title
+
+    uiHelper.position(m.titleLabel, "top", {
+        top: 30,
+        left: 30,
+        right: 30
+    })
 
     m.posterRowList = m.top.findNode("posterRowList")
     
@@ -75,28 +104,18 @@ function setVideo() as void
 
     ' TEST DATA
     videoContent = createObject("RoSGNode", "ContentNode")
-    ' videoContent.id = 519497184
-    ' videoContent.contentid = 519497184
-    videoContent.title = "Microsoft's Fetch App Identifies Your Dog"
-    ' videoContent.description = "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be."
-    ' videoContent.shortDescriptionLine1 = "Microsoft's Fetch App Identifies Your Dog"
-    ' videoContent.shortDescriptionLine2 = "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be."
-    ' videoContent.length = 82
-    ' videoContent.rating = "nonadult"
-    videoContent.streamFormat = "mp4"
-    ' videoContent.contentType =  "episode"
-    videoContent.url = "http://tvideos.5min.com//869/5194869/519486842_4.mp4?hdnea=exp=1455814160~acl=/*~hmac=dea2c90ba698675bc63e3870330e7673b922a2b9f57dcee1e36a8f1978a33d68"
-
-
-    ' videoContent.title = "Test Video"
-    ' videoContent.streamformat = "mp4"
+    videoContent.title = m.episode.title
+    videoContent.streamFormat = m.episode.streamFormat
+    videoContent.url = m.episode.stream.url
     m.video.content = videoContent
     m.video.control = "play"
 
 end function
 
-function toggleMenu()
-    if m.posterAnimation.state <> "running"
+
+function toggleRelated()
+    
+    if m.posterAnimation.state <> "running" then
         if m.posterRowList.hasFocus() then
             m.posterInterp.keyValue = [ m.posterRowList.translation, m.initialPosterTranslation ]
             m.posterAnimation.control = "start"
@@ -110,6 +129,25 @@ function toggleMenu()
             m.posterRowList.SetFocus(true)
         end if
     end if
+
+end function
+
+function toggleMenu(key)
+    
+    if m.menuGroup.visible then
+        if key = "up" then
+            if m.posterRowList.hasFocus() then
+                toggleRelated()
+            else
+                m.menuGroup.visible = false
+            endif
+        else
+            toggleRelated()
+        endif
+    else
+        m.menuGroup.visible = true
+    end if
+
 end function
 
 
@@ -139,10 +177,12 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
             m.video.position = m.video.position + 60
             m.video.seek = m.video.position
 
-        else if (key = "up") then
-            toggleMenu()
-        else if (key = "down") then    
-            toggleMenu()
+        else if key = "up" OR key = "down" then
+            
+            if m.video.state <> "buffering" then
+                toggleMenu(key)
+            end if
+
         end if            
     
     end if

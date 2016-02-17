@@ -11,25 +11,38 @@
     <children>
         <Video id="videoPlayer"/>
 
-        <ProgressBar 
-            id="progressBar"
-            height="60" />
+        <Group
+            id="menuGroup"
+            visible="false" >
 
-        <PosterRowList 
-            id="posterRowList"
-            itemComponentName="PosterRowListItem"
-            height="212" />
+            <Label
+                id="titleLabel"
+                height="44"
+                font="font:LargeSystemFont"
+                horizAlign="left"
+                vertAlign="center" />
 
-        <Animation
-            id="posterRowListAnimation"
-            duration=".5"
-            easeFunction="linear" >
-         
-            <Vector2DFieldInterpolator
-                id = "posterRowListInterp"
-                fieldToInterp="posterRowList.translation" />
+            <ProgressBar 
+                id="progressBar"
+                height="60" />
 
-        </Animation>
+            <PosterRowList 
+                id="posterRowList"
+                itemComponentName="PosterRowListItem"
+                height="212" />
+
+            <Animation
+                id="posterRowListAnimation"
+                duration=".5"
+                easeFunction="linear" >
+             
+                <Vector2DFieldInterpolator
+                    id = "posterRowListInterp"
+                    fieldToInterp="posterRowList.translation" />
+
+            </Animation>
+
+        </Group>
 
     </children>
 
