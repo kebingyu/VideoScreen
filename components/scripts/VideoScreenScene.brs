@@ -100,9 +100,11 @@ function toggleMenu()
         if m.posterRowList.hasFocus() then
             m.posterInterp.keyValue = [ m.posterRowList.translation, m.initialPosterTranslation ]
             m.posterAnimation.control = "start"
+            m.progressBar.visible = true
             m.posterRowList.SetFocus(false)
             m.top.setFocus(true)
         else
+            m.progressBar.visible = false
             m.posterInterp.keyValue = [ m.initialPosterTranslation, [m.initialPosterTranslation[0], m.initialPosterTranslation[1] - 200] ]
             m.posterAnimation.control = "start"
             m.posterRowList.SetFocus(true)
