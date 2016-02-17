@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<component name="PosterRowList" extends="RowList" >
+
+<interface> 
+  <field id="height" type="float" onChange="sizeChanged"/> 
+  <field id="width" type="float" onChange="sizeChanged"/> 
+</interface>
+
+<script type="text/brightscript" >
+<![CDATA[
+
+    function init()
+        m.top.numRows = 1
+        m.top.showRowLabel = [true]
+        m.top.showRowCounter = [true]
+
+        m.top.rowHeights = [220]
+        m.top.rowItemSize = [ [196, 220] ]
+
+        m.top.rowItemSpacing = [ [20, 0] ]      
+
+        m.top.rowFocusAnimationStyle = "fixedFocusWrap"
+        m.top.focusable = true
+        m.top.content = GetRowListContent()
+        
+        m.top.visible = true
+
+    end function
+
+    function sizeChanged()
+        m.top.itemSize = [m.top.width, m.top.height]
+    end function
+
+
+    function GetRowListContent() as object
+    
+        data = CreateObject("roSGNode", "ContentNode")
+        row = data.CreateChild("ContentNode")
+        row.title = "Example Playlist"
+
+        for i = 1 to 20
+            item = row.CreateChild("PosterRowListItemData")
+            item.posterUrl = "pkg:/images/thumbnail.jpg"
+            item.labelText = "This is item" + stri(i)
+        end for
+        
+        return data
+
+    end function
+
+   
+]]>
+</script>
+</component>

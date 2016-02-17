@@ -15,6 +15,22 @@
             id="progressBar"
             height="60" />
 
+        <PosterRowList 
+            id="posterRowList"
+            itemComponentName="PosterRowListItem"
+            height="212" />
+
+        <Animation
+            id="posterRowListAnimation"
+            duration=".5"
+            easeFunction="linear" >
+         
+            <Vector2DFieldInterpolator
+                id = "posterRowListInterp"
+                fieldToInterp="posterRowList.translation" />
+
+        </Animation>
+
     </children>
 
 </component>

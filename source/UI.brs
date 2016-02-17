@@ -39,7 +39,7 @@ function ui_position(node, location, padding)
         right: 0, 
         bottom: 0
     }, padding)
-
+    
     ' TODO: create locations left and right
     if location = "top" then
 

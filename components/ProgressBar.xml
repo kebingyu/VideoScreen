@@ -3,7 +3,7 @@
 <component name="ProgressBar" extends="Rectangle">
 
     <interface>
-        <field id="progress" type="integer" onChange="updateProgress"/>
+        <field id="progress" type="integer" onChange="updateProgress" value="0"/>
         <field id="rectSize" type="intarray" onChange="updateRectSize"/>
     </interface>
 

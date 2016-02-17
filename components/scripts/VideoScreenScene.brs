@@ -19,14 +19,34 @@ sub init()
 
     uiHelper.fullScreen(m.video)
 
-    ' m.video.ObserveField("state", "statusChanged")
+    m.video.ObserveField("state", "statusChanged")
     m.video.ObserveField("bufferingStatus", "bufferingChanged")
     m.video.ObserveField("position", "positionChanged")
+
+    m.posterRowList = m.top.findNode("posterRowList")
     
+    uiHelper.position(m.posterRowList, "bottom", {
+        top: 30,
+        left: 30,
+        right: 30,
+        bottom: (-1 * m.posterRowList.height) + 30
+    })    
+
+    setPosterAnimation()
+
     setVideo()      
 
 end sub
 
+function setPosterAnimation()
+
+    ' Set up values for poster animation
+    m.posterAnimation = m.top.findNode("posterRowListAnimation")
+    m.posterInterp = m.top.findNode("posterRowListInterp")
+    m.initialPosterTranslation = m.posterRowList.translation
+    m.posterInterp.key = [0.0, 1.0]
+
+end function
 
 function positionChanged()
 
@@ -51,7 +71,6 @@ function bufferingChanged()
     ' show a preloader graphic?
 end function
 
-
 function setVideo() as void
 
     ' TEST DATA
@@ -66,7 +85,7 @@ function setVideo() as void
     ' videoContent.rating = "nonadult"
     videoContent.streamFormat = "mp4"
     ' videoContent.contentType =  "episode"
-    videoContent.url = "http://tvideos.5min.com//869/5194869/519486842_4.mp4?hdnea=exp=1455727554~acl=/*~hmac=b2b01ab5e30a6134044ad5734d0d608c9f277bd53c291a2890d4f16a154e8e7a"
+    videoContent.url = "http://tvideos.5min.com//869/5194869/519486842_4.mp4?hdnea=exp=1455814160~acl=/*~hmac=dea2c90ba698675bc63e3870330e7673b922a2b9f57dcee1e36a8f1978a33d68"
 
 
     ' videoContent.title = "Test Video"
@@ -76,6 +95,22 @@ function setVideo() as void
 
 end function
 
+function toggleMenu()
+    if m.posterAnimation.state <> "running"
+        if m.posterRowList.hasFocus() then
+            m.posterInterp.keyValue = [ m.posterRowList.translation, m.initialPosterTranslation ]
+            m.posterAnimation.control = "start"
+            m.posterRowList.SetFocus(false)
+            m.top.setFocus(true)
+        else
+            m.posterInterp.keyValue = [ m.initialPosterTranslation, [m.initialPosterTranslation[0], m.initialPosterTranslation[1] - 200] ]
+            m.posterAnimation.control = "start"
+            m.posterRowList.SetFocus(true)
+        end if
+    end if
+end function
+
+
 function onKeyEvent(key as String, press as Boolean) as Boolean
     
     print key
@@ -84,7 +119,7 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
     
     if press then
     
-        if (key = "play") then
+        if key = "play" then
         
             if m.video.state = "paused" then
                 m.video.control = "resume"
@@ -92,18 +127,20 @@ function onKeyEvent(key as String, press as Boolean) as Boolean
                 m.video.control = "pause"
             endif
     
-        else if (key = "rewind") then
+        else if key = "rewind" then
         
             m.video.position = m.video.position - 60
             m.video.seek = m.video.position
         
-        else if (key = "fastforward") then    
+        else if key = "fastforward" then    
             
             m.video.position = m.video.position + 60
             m.video.seek = m.video.position
 
+        else if (key = "up") then
+            toggleMenu()
         else if (key = "down") then    
-            print "Show more videos at the bottom"
+            toggleMenu()
         end if            
     
     end if
