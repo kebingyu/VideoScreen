@@ -29,11 +29,11 @@ end function
 ''  @param string location
 ''  @param object padding
 '' 
-function ui_position(node, location, padding)
+function ui_position(node, location, padding, util = Utils())
 
     info = CreateObject("roDeviceInfo")
     size = info.GetDisplaySize()    
-    padding = Utils().extend({
+    padding = util.extend({
         top: 0, 
         left: 0, 
         right: 0, 

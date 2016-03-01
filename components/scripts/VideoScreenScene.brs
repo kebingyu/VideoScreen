@@ -1,4 +1,4 @@
-sub init()
+sub init(uiHelper = UI())
 
     ' TEST DATA
     m.episode = {
@@ -13,13 +13,11 @@ sub init()
         streamFormat: "mp4",
         contentType:  "episode",
         stream: {  
-            url: "http://tvideos.5min.com//300/5194300/519429940_4v1.mp4?hdnea=exp=1455824551~acl=/*~hmac=2c0a60999724c0b3dcb4135344984f3e77dc0583ba1c35b8686d8d931c1c6bef"
+            url: "http://cdn.vidible.tv/prod/2016-03/01/56d4ee0be4b080b62b960b24_854x480_v1.mp4?hdnea=exp=1456936060~acl=/*~hmac=1e5b0cfa735c8146e16058ee089dbf28b1bcc3bb502dacdaaebe2e1c727de59a"
         }
     }
     ' @END TEST DATA
-
-
-    uiHelper = UI()
+    
     m.top.setFocus(true)
     m.progressBar = m.top.findNode("progressBar")
 
@@ -54,6 +52,8 @@ sub init()
 
     m.posterRowList = m.top.findNode("posterRowList")
     
+    print "posterrowlist"
+
     uiHelper.position(m.posterRowList, "bottom", {
         top: 30,
         left: 30,
@@ -63,9 +63,31 @@ sub init()
 
     setPosterAnimation()
 
-    setVideo()      
+    setVideo()   
 
 end sub
+
+
+function playlistChanged()
+
+    ' Load playlist videos into posterRowList
+
+    items = m.top.playlist.items
+    data = CreateObject("roSGNode", "ContentNode")
+    row = data.CreateChild("ContentNode")
+    row.title = "Playlist"
+
+    for each video in items
+        print video
+        item = row.CreateChild("PosterRowListItemData")
+        item.posterUrl = video.sdPosterURL
+        item.labelText = video.title
+    end for
+
+    m.posterRowList.content = data    
+
+end function
+
 
 function setPosterAnimation()
 
