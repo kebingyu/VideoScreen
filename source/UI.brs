@@ -1,7 +1,8 @@
 sub UI() as Object
     this = {
         fullScreen: ui_fullScreen,
-        position: ui_position
+        position: ui_position,
+        getUIResolutionName: ui_getUIResolutionName
     }
     return this
 end sub
@@ -54,4 +55,10 @@ function ui_position(node, location, padding, util = Utils())
     end if
 
 end function
+
+function ui_getUIResolutionName()
+    info = CreateObject("roDeviceInfo")
+    return info.GetUIResolution().name
+end function
+
 

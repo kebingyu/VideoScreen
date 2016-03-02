@@ -5,11 +5,10 @@ sub VideoScreenSG(api = AolOnApi())
     screen = CreateObject("roSGScreen")
     m.port = CreateObject("roMessagePort")
     screen.setMessagePort(m.port)
+
     scene = screen.CreateScene("VideoScreenScene")
+
     screen.show()
-
-
-    
 
     ' print api.getPages()
     playlists = api.getPlaylists("featured")

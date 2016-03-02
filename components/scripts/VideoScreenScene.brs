@@ -1,23 +1,5 @@
 sub init(uiHelper = UI())
 
-    ' TEST DATA
-    m.episode = {
-        id: 519497184,
-        contentid: 519497184,
-        title: "Microsoft's Fetch App Identifies Your Dog",
-        description: "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be.",
-        shortDescriptionLine1: "Microsoft's Fetch App Identifies Your Dog",
-        shortDescriptionLine2: "Fetch is an app that recognizes breeds of dogs and tells you what dog you look like the most. Or if you're human, it let's you know your spirit dog might be.",
-        length: 82,
-        rating: "nonadult",
-        streamFormat: "mp4",
-        contentType:  "episode",
-        stream: {  
-            url: "http://cdn.vidible.tv/prod/2016-03/01/56d4ee0be4b080b62b960b24_854x480_v1.mp4?hdnea=exp=1456936060~acl=/*~hmac=1e5b0cfa735c8146e16058ee089dbf28b1bcc3bb502dacdaaebe2e1c727de59a"
-        }
-    }
-    ' @END TEST DATA
-    
     m.top.setFocus(true)
     m.progressBar = m.top.findNode("progressBar")
 
@@ -38,11 +20,8 @@ sub init(uiHelper = UI())
     m.video.ObserveField("bufferingStatus", "bufferingChanged")
     m.video.ObserveField("position", "positionChanged")
 
-
     m.menuGroup = m.top.findNode("menuGroup")
-
     m.titleLabel = m.top.findNode("titleLabel")
-    m.titleLabel.text = m.episode.title
 
     uiHelper.position(m.titleLabel, "top", {
         top: 30,
@@ -52,7 +31,7 @@ sub init(uiHelper = UI())
 
     m.posterRowList = m.top.findNode("posterRowList")
     
-    print "posterrowlist"
+    m.posterRowList.observeField("itemSelected", "videoSelected")
 
     uiHelper.position(m.posterRowList, "bottom", {
         top: 30,
@@ -63,28 +42,47 @@ sub init(uiHelper = UI())
 
     setPosterAnimation()
 
-    setVideo()   
-
 end sub
+
+
+function videoSelected()
+    setVideo(m.items[m.posterRowList.rowItemSelected[1]])
+end function
+
+function setVideo(video) as void
+
+    m.titleLabel.text = video.title
+    
+    videoContent = createObject("RoSGNode", "ContentNode")
+    videoContent.title = video.title
+    videoContent.streamFormat = video.streamFormat
+
+    '' Should this be done when the feed is retrieved instead? AolOnAPI().getRenditionByQuality(video)
+    videoContent.url = AolOnAPI().getRenditionByQuality(video)
+    
+    m.video.content = videoContent
+    m.video.control = "play"
+
+end function
 
 
 function playlistChanged()
 
     ' Load playlist videos into posterRowList
-
-    items = m.top.playlist.items
+    m.items = m.top.playlist.items
     data = CreateObject("roSGNode", "ContentNode")
     row = data.CreateChild("ContentNode")
-    row.title = "Playlist"
+    row.title = m.top.playlist.name
 
-    for each video in items
-        print video
+    for each video in m.items
         item = row.CreateChild("PosterRowListItemData")
         item.posterUrl = video.sdPosterURL
         item.labelText = video.title
     end for
 
     m.posterRowList.content = data    
+
+    setVideo(m.items[0])
 
 end function
 
@@ -122,17 +120,20 @@ function bufferingChanged()
     ' show a preloader graphic?
 end function
 
-function setVideo() as void
 
-    ' TEST DATA
-    videoContent = createObject("RoSGNode", "ContentNode")
-    videoContent.title = m.episode.title
-    videoContent.streamFormat = m.episode.streamFormat
-    videoContent.url = m.episode.stream.url
-    m.video.content = videoContent
-    m.video.control = "play"
 
-end function
+' function setVideo() as void
+
+'     ' TEST DATA
+'     videoContent = createObject("RoSGNode", "ContentNode")
+'     videoContent.title = m.episode.title
+'     videoContent.streamFormat = m.episode.streamFormat
+'     videoContent.url = m.episode.stream.url
+'     m.video.content = videoContent
+'     m.video.control = "play"
+
+' end function
+
 
 
 function toggleRelated()

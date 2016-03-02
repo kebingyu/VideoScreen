@@ -17,38 +17,16 @@
         m.top.rowHeights = [220]
         m.top.rowItemSize = [ [196, 220] ]
         m.top.rowItemSpacing = [ [20, 0] ]      
-        m.top.rowFocusAnimationStyle = "fixedFocusWrap"
-        m.top.focusable = true
-        ' m.top.content = GetRowListContent()
-        
-        m.top.visible = true
 
+        ' *** WHY DOES THIS BREAK THE ARRAY INDEXING!!!!!!!???????
+        ' m.top.rowFocusAnimationStyle = "fixedFocusWrap"
+        m.top.focusable = true
+        m.top.visible = true
     end function
 
     function sizeChanged()
         m.top.itemSize = [m.top.width, m.top.height]
     end function
-
-
-    ' function GetRowListContent() as object
-    
-    '    data = CreateObject("roSGNode", "ContentNode")
-    '    row = data.CreateChild("ContentNode")
-    '    row.title = "Example Playlist"
-
-    '    for i = 1 to 20
-    '        item = row.CreateChild("PosterRowListItemData")
-    '        item.posterUrl = "pkg:/images/thumbnail.jpg"
-    '        item.labelText = "This is item" + stri(i)
-    '    end for
-        
-    '    return data
-
-    ' end function
-
-
-
-
    
 ]]>
 </script>

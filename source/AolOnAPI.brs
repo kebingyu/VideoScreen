@@ -1,11 +1,12 @@
-function AolOnAPI()
+sub AolOnAPI() as Object
     this = {
         getPages: aolOnApi_getPages,
         getPlaylists: aolOnApi_getPlaylists,
-        getRenditionsForVideo: aolOnApi_getRenditionsForVideo    
+        ' getRenditionsForVideo: aolOnApi_getRenditionsForVideo
+        getRenditionByQuality: aolOnApi_getRenditionByQuality
     }
     return this
-end function
+end sub
 
 function aolOnApi_getPages(util = Utils())
   
@@ -71,8 +72,7 @@ function aolOnApi_getPlaylists(pageId, util = Utils())
                     categories: util.validStr(video.category),
                     streamFormat: "mp4",
                     contentType:  "episode",
-                    renditions: video.renditions,
-                    streams: []
+                    renditions: video.renditions
                 })        
             end for
 
@@ -80,22 +80,39 @@ function aolOnApi_getPlaylists(pageId, util = Utils())
 
         end for
 
-    endif 
+    end if 
 
     return playlists
 
 end function
 
-function aolOnApi_getRenditionsForVideo(video)
+' function aolOnApi_getRenditionsForVideo(video)
+
+'     for each rendition in video.renditions
+'         if UCase(util.validStr(rendition.format)) = "MP4"
+'             newStream = {
+'                 url:  util.validStr(rendition.url)
+'             }
+'             video.streams.Push(newStream)
+'         end if
+'     next
+' end function
+
+function aolOnApi_getRenditionByQuality(video, uiHelper = UI(), util = Utils())
+    
+    quality = uiHelper.getUIResolutionName()
+    url = ""
 
     for each rendition in video.renditions
-        if UCase(util.validStr(rendition.format)) = "MP4"
-            newStream = {
-                url:  util.validStr(rendition.url)
-            }
-            video.streams.Push(newStream)
-            'print video.streams
+        if UCase(util.validStr(rendition.quality)) = UCase(quality)
+            url = rendition.url
+            exit for
         end if
-    next
-end function
+    end for
+
+    return url
+
+end function 
+
+
 
