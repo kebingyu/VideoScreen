@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 
-<!--********** Copyright 2015 Roku Corp.  All Rights Reserved. **********-->
-
 <component name="VideoScreenScene" extends="Scene">
 
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />

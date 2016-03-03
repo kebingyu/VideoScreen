@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<component name="playlistsContentRequest" extends="Task">
+
+    <interface>
+        <field id="uri" type="string"/>
+        <field id="content" type="node"/>
+    </interface> 
+
+    <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
+    <script type = "text/brightscript" >
+    <![CDATA[
+
+    sub init()
+        m.top.functionName = "getContent"
+    end sub
+
+    sub getContent()
+
+        ' api = AolOnAPI()
+        
+        util = Utils()
+        
+        response = ParseJson(util.getStringFromURL(m.top.uri)).response
+
+        content = createObject("RoSGNode", "ContentNode")    
+
+        ' print response.data
+
+        if response.data <> invalid
+
+            for each playlist in response.data.playlists
+
+                playlistItem = content.createChild("ContentNode")
+
+                playlistItem.title = playlist.name
+                playlistItem.id = playlist.id
+                playlistItem.name = playlist.name
+                playlistItem.items = []
+
+            end for
+
+        end if 
+
+        m.top.content = content
+
+    end sub
+
+    ]]>
+    </script>
+
+</component>

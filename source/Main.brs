@@ -9,7 +9,7 @@ sub Main()
   globalConfig.initTheme()
 
   ' VideoScreen()
-  VideoScreenSG()
+  HomeScreen()
   
   sleep(25)
 
