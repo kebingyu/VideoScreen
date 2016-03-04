@@ -13,16 +13,8 @@
 
     <children>
 
-        <Group 
-            id="playlistsGroup">
-
-            <PosterRowList 
-                id="playlistRowList"
-                itemComponentName="PosterRowListItem"
-                height="212"/>
-
-        </Group>
-
+        <LayoutGroup id="playlistsGroup"></LayoutGroup>
+        
     </children>
 
 </component>

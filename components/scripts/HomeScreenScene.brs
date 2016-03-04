@@ -1,21 +1,10 @@
 sub init(uiHelper = UI(), api = AolOnAPI())
-
     
     m.top.setFocus(true)
     m.playlistsGroup = m.top.findNode("playlistsGroup")
-    m.playlistRowList = m.top.findNode("playlistRowList")
-
-    uiHelper.position(m.playlistRowList, "bottom", {
-        top: 30,
-        left: 30,
-        right: 30,
-        bottom: 100
-    }) 
-
-
+    m.activeList = 0
 
 end sub
-
 
 function getPlaylistsContent()
     
@@ -26,51 +15,57 @@ function getPlaylistsContent()
 
 end function
 
-
 sub showPlaylists()
 
-    print "task done callback"
     content = m.playlistsContentRequest.content
 
-    ' print content.getChild(0).getField("title")
-    ' print content.getChild(0).getChildCount()
+    for i=0 to (content.getChildCount()-1)
+        rowList = createObject("roSGNode", "PosterRowList")
+        rowList.itemComponentName = "PosterRowListItem"
+        rowList.height = 212
+        rowList.width = 1000
+        rowList.content = content.getChild(i)
+        m.playlistsGroup.appendChild(rowList)
+    end for
 
-
-    m.playlistRowList.content = content.getChild(0)
-    m.playlistRowList.SetFocus(true)
-
-
+    setPlaylistsGroupFocus(0)
 
 end sub
 
+function setPlaylistsGroupFocus(index as integer)
+    m.playlistsGroup.getChild(index).SetFocus(true)
+end function
 
-function playlistsChanged()
-
-    ' print "WTF"
-
-
-    ' playlist = m.top.playlists[0]
-
-
-
-    ' m.items = playlist.items
-
-
-
-
-
-    ' data = CreateObject("roSGNode", "ContentNode")
+function onKeyEvent(key as String, press as Boolean) as Boolean
+  
+    ' print key
+    ' print press
+    handled = false
     
-    ' row = data.CreateChild("ContentNode")
+    if press then
+        
+        '' probably should check if we're focused on the playlistsGroup 
+
+        if (key = "down") then
+            if m.activeList = (m.playlistsGroup.getChildCount()-1)
+                m.activeList = 0
+            else
+                m.activeList = m.activeList + 1
+            end if
+            setPlaylistsGroupFocus(m.activeList)
+        end if
+
+        if (key = "up") then
+            if m.activeList = 0
+                m.activeList = m.playlistsGroup.getChildCount() - 1
+            else
+                m.activeList = m.activeList - 1
+            end if
+            setPlaylistsGroupFocus(m.activeList)
+        end if        
+
+    end if
+
+    return handled
     
-    ' row.title = playlist.name
-
-    ' for each video in m.items
-    '     item = row.CreateChild("PosterRowListItemData")
-    '     item.posterUrl = video.sdPosterURL
-    '     item.labelText = video.title
-    ' end for
-
-    ' m.playlistRowList.content = data    
-
 end function
