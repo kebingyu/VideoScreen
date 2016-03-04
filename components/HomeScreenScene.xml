@@ -13,8 +13,6 @@
 
     <children>
 
-        <LabelList id="coreList" translation="[160,92]" itemSize="[440,48]" itemSpacing="[0,0]" sectionDividerHeight="48.0" sectionDividerFont="font:MediumBoldSystemFont" sectionDividerTextColor="0x880088FF"/>
-
         <Group 
             id="playlistsGroup">
 

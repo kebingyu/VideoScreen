@@ -75,7 +75,7 @@ function playlistChanged()
     row.title = m.top.playlist.name
 
     for each video in m.items
-        item = row.CreateChild("PosterRowListItemData")
+        item = row.CreateChild("VideoItemData")
         item.posterUrl = video.sdPosterURL
         item.labelText = video.title
     end for
