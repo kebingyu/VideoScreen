@@ -3,8 +3,8 @@
 <component name="PosterRowListItemData" extends="ContentNode">
  
 <interface> 
-  <field id="labelText" type="string" />
-  <field id="posterUrl" type="string" />
+    <field id="labelText" type="string" />
+    <field id="posterUrl" type="string" />
 </interface>
 
 </component>

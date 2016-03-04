@@ -16,33 +16,70 @@
     end sub
 
     sub getContent()
-
-        ' api = AolOnAPI()
         
         util = Utils()
         
-        response = ParseJson(util.getStringFromURL(m.top.uri)).response
+        request = ParseJson(util.getStringFromURL(m.top.uri))
+    
+        if request.response <> invalid
 
-        content = createObject("RoSGNode", "ContentNode")    
+            response = request.response
 
-        ' print response.data
+            content = createObject("RoSGNode", "ContentNode")    
 
-        if response.data <> invalid
+            if response.data <> invalid
 
-            for each playlist in response.data.playlists
+                for each playlist in response.data.playlists
 
-                playlistItem = content.createChild("ContentNode")
+                    playlistItem = content.createChild("ContentNode")
+                    playlistItem.title = playlist.name
+                    ' playlistItem.id = playlist.id
+                    ' playlistItem.name = playlist.name
+                    ' playlistItem.items = []
 
-                playlistItem.title = playlist.name
-                playlistItem.id = playlist.id
-                playlistItem.name = playlist.name
-                playlistItem.items = []
+                    for each item in playlist.items
+                        videoData = item.video
+                        video = playlistItem.CreateChild("PosterRowListItemData")
+                        video.posterUrl = util.validStr(videoData.thumbnailList[0].url)
+                        video.labelText = videoData.title
 
-            end for
 
-        end if 
+                        
 
-        m.top.content = content
+                        '' formatted release date
+                        ' releasedate = CreateObject("roDateTime")
+                        ' releasedate.FromSeconds(video.publishDate)
+
+                        'playlistItem.items.Push({
+                        '    id: util.validStr(video.id),
+                        '    contentid: util.validStr(video.id),
+                        '    title: util.validStr(video.title),
+                        '    description: util.validStr(video.description),
+                        '    shortDescriptionLine1: util.validStr(video.title),
+                        '    shortDescriptionLine2: util.validStr(video.description),
+                        '    sdPosterURL: util.validStr(video.thumbnailList[0].url),
+                        '    hdPosterURL: util.validStr(video.thumbnailList[1].url),
+                        '    releaseDate: releasedate.asDateStringNoParam(),
+                        '    length: video.duration,
+                        '    rating: util.validStr(video.rating),
+                        '    categories: util.validStr(video.category),
+                        '    streamFormat: "mp4",
+                        '    contentType:  "episode",
+                        '    renditions: video.renditions
+                        ' }) 
+
+                    end for
+
+
+                end for
+
+            end if 
+
+            m.top.content = content
+
+        else
+            '' TODO: Handle request error
+        end if
 
     end sub
 

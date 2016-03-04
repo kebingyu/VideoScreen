@@ -1,24 +1,19 @@
 sub init(uiHelper = UI(), api = AolOnAPI())
 
+    
+    m.top.setFocus(true)
+    m.playlistsGroup = m.top.findNode("playlistsGroup")
+    m.playlistRowList = m.top.findNode("playlistRowList")
     m.list = m.top.findNode("coreList")
 
-    ' m.top.setFocus(true)
-    ' m.playlistsGroup = m.top.findNode("playlistsGroup")
-    ' m.playlistRowList = m.top.findNode("playlistRowList")
-
-    ' uiHelper.position(m.playlistRowList, "bottom", {
-    '     top: 30,
-    '     left: 30,
-    '     right: 30,
-    '     bottom: (-1 * m.playlistRowList.height) + 30
-    ' }) 
+    uiHelper.position(m.playlistRowList, "bottom", {
+        top: 30,
+        left: 30,
+        right: 30,
+        bottom: 100
+    }) 
 
 
-    ' m.testTask = createObject("roSGNode", "testTask") 
-    
-    ' print "task done"
-
-    '  m.list = m.top.findNode("coreList")
 
 end sub
 
@@ -36,9 +31,34 @@ end function
 sub showPlaylists()
 
     print "task done callback"
-    print m.playlistsContentRequest.content
-    m.list.content = m.playlistsContentRequest.content
-    m.list.SetFocus(false)
+    content = m.playlistsContentRequest.content
+
+    m.list.content = content
+    print content.getChild(0).getField("title")
+    print content.getChild(0).getChildCount()
+
+
+    
+    ' m.playlistRowList.itemContent = content
+    m.playlistRowList.content = content
+    ' m.playlistRowList.SetFocus(true)
+
+
+
+    ' data = CreateObject("roSGNode", "ContentNode")
+    ' row = data.CreateChild("ContentNode")
+    ' row.title = "fooo"
+
+    ' for i=1 to 10
+    '     item = row.CreateChild("PosterRowListItemData")
+    '     item.posterUrl = ""
+    '     item.labelText = "HElllloo"
+    ' end for
+
+    ' m.playlistRowList.content = data    
+    m.playlistRowList.SetFocus(true)
+
+
 
 end sub
 
