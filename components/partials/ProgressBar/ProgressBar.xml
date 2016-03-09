@@ -7,7 +7,7 @@
         <field id="rectSize" type="intarray" onChange="updateRectSize"/>
     </interface>
 
-    <script type="text/brightscript" uri="pkg:/components/scripts/ProgressBar.brs" />
+    <script type="text/brightscript" uri="pkg:/components/partials/ProgressBar/ProgressBar.brs" />
 
     <children>
     

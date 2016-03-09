@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 
-<component name="VideoScreenScene" extends="Scene">
+<component name="VideoScene" extends="Scene">
 
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <script type="text/brightscript" uri="pkg:/source/UI.brs" />
     <script type="text/brightscript" uri="pkg:/source/AolOnAPI.brs" />
-    <script type="text/brightscript" uri="pkg:/components/scripts/VideoScreenScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/screens/VideoScene/VideoScene.brs" />
 
     <interface> 
         <field id="playlist" type="assocarray" onChange="playlistChanged"/>

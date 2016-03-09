@@ -1,20 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?> 
 
-<component name="HomeScreenScene" extends="Scene">
+<component name="HomeScene" extends="Scene">
 
     <script type="text/brightscript" uri="pkg:/source/Utils.brs" />
     <script type="text/brightscript" uri="pkg:/source/UI.brs" />
     <script type="text/brightscript" uri="pkg:/source/AolOnAPI.brs" />
-    <script type="text/brightscript" uri="pkg:/components/scripts/HomeScreenScene.brs" />
+    <script type="text/brightscript" uri="pkg:/components/screens/HomeScene/HomeScene.brs" />
 
     <interface> 
         <field id="playlistsContentUri" type="string" onChange="getPlaylistsContent"/>
     </interface>
 
     <children>
-
         <LayoutGroup id="playlistsGroup"></LayoutGroup>
-        
     </children>
 
 </component>
