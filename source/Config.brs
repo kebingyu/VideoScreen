@@ -9,6 +9,7 @@ Function Config() As Object
     ' the name to show on top of screens
     appName: "AOL Alpha Roku Channel"
     initTheme: initTheme
+    get : getConfig
   }
 
   return this
@@ -65,3 +66,14 @@ Function initTheme()
   app.SetTheme(theme)
 
 End Function
+
+Function getConfig(key as String)
+    configs = {
+        playlistsContentUri : "https://feedapi.b2c.on.aol.com/v1.0/app/pages/techcrunch/featured/playlists_full?device=ROKU&separateBodyTopic=false&imageDimensions=180x122,264x198&imageFormat=png&useThumbnailList=true"
+    }
+    if configs[key] <> invalid then
+        return configs[key]
+    else
+        return invalid
+    end if
+end Function
